@@ -16,27 +16,27 @@ class DeleteViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.titleNotes.userInteractionEnabled = false
-        self.contentNotes.userInteractionEnabled = false
-        self.titleNotes.text = self.itemNote.valueForKey("title") as? String
-        self.contentNotes.text = self.itemNote.valueForKey("notes") as? String
+        self.titleNotes.isUserInteractionEnabled = false
+        self.contentNotes.isUserInteractionEnabled = false
+        self.titleNotes.text = self.itemNote.value(forKey: "title") as? String
+        self.contentNotes.text = self.itemNote.value(forKey: "notes") as? String
         
     }
     
     @IBAction func Delete_btnClicked(sender: AnyObject) {
         
-        let userDefault:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        let notesList:NSMutableArray?   = userDefault.objectForKey("noteslist") as? NSMutableArray
+        let userDefault:UserDefaults = UserDefaults.standard
+        let notesList:NSMutableArray?   = userDefault.object(forKey: "noteslist") as? NSMutableArray
         if((notesList) != nil){// exist
             let newMutableArray:NSMutableArray = NSMutableArray()
-            for dict:AnyObject in notesList! {
-                newMutableArray.addObject(dict as! NSDictionary)
+            for dict:Any in notesList! {
+                newMutableArray.add(dict as! NSDictionary)
             }
-            newMutableArray.removeObject(itemNote)
-            userDefault.removeObjectForKey("noteslist")
-            userDefault.setObject(newMutableArray, forKey: "noteslist")
+            newMutableArray.remove(itemNote)
+            userDefault.removeObject(forKey: "noteslist")
+            userDefault.set(newMutableArray, forKey: "noteslist")
             userDefault.synchronize()
-            self.navigationController?.popToRootViewControllerAnimated(true)
+            self.navigationController?.popToRootViewController(animated: true)
         }
         
     }

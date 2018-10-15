@@ -17,36 +17,43 @@ class NotesTableViewController: UITableViewController {
         
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        let userDefault:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        let notesItems:NSMutableArray?   = userDefault.objectForKey("noteslist") as? NSMutableArray
+        let userDefault:UserDefaults = UserDefaults.standard
+        let notesItems:NSMutableArray?   = userDefault.object(forKey: "noteslist") as? NSMutableArray
         if((notesItems) != nil){
             self.notesList = notesItems!
         }
         self.tableView.reloadData()
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "deletevc"{
-            let deleteViewController:DeleteViewController = segue.destinationViewController as! DeleteViewController
-            deleteViewController.itemNote = self.notesList.objectAtIndex((self.tableView.indexPathForSelectedRow?.row)!) as! NSDictionary
+            let deleteViewController:DeleteViewController = segue.destination as! DeleteViewController
+            deleteViewController.itemNote = self.notesList.object(at: (self.tableView.indexPathForSelectedRow?.row)!) as! NSDictionary
             
         }
     }
+   
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.notesList.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-        let notesItem:NSDictionary = self.notesList.objectAtIndex(indexPath.row) as! NSDictionary
-        cell.textLabel?.text = notesItem.valueForKey("title") as? String
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let notesItem:NSDictionary = self.notesList.object(at: indexPath.row) as! NSDictionary
+        cell.textLabel?.text = notesItem.value(forKey: "title") as? String
         return cell
     }
 }
+
+
+
+
+
+
+
+
+

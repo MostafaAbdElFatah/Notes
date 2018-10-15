@@ -18,45 +18,45 @@ class AddViewController: UIViewController {
         
     }
     
-    @IBAction func Done_BtnClicked(sender: AnyObject) {
+    @IBAction func Done_BtnClicked(_ sender: AnyObject) {
         
         if self.titleNotes.text == "" {
             
-            let useralter = UIAlertController(title: "Please Fill Title Notes", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
-            let OkAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil)
+            let useralter = UIAlertController(title: "Please Fill Title Notes", message: nil, preferredStyle: UIAlertControllerStyle.alert)
+            let OkAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
             useralter.addAction(OkAction)
-            self.presentViewController(useralter, animated:true, completion: nil)
+            self.present(useralter, animated:true)
             
         }else if self.ContentNotes.text == "" {
             
-            let useralter = UIAlertController(title: "Please Fill Body Notes", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
-            let OkAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil)
+            let useralter = UIAlertController(title: "Please Fill Body Notes", message: nil, preferredStyle: UIAlertControllerStyle.alert)
+            let OkAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
             useralter.addAction(OkAction)
-            self.presentViewController(useralter, animated:true, completion: nil)
+            self.present(useralter, animated:true)
             
         }else{
             
-            let userDefault:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-            var notesList:NSMutableArray?   = userDefault.objectForKey("noteslist") as? NSMutableArray
+            let userDefault:UserDefaults = UserDefaults.standard
+            var notesList:NSMutableArray?   = userDefault.object(forKey: "noteslist") as? NSMutableArray
             let item:NSMutableDictionary = NSMutableDictionary()
             item.setValue(self.titleNotes.text, forKey: "title")
             item.setValue(self.ContentNotes.text, forKey: "notes")
             if((notesList) != nil){// exist
                 let newMutableArray:NSMutableArray = NSMutableArray()
-                for dict:AnyObject in notesList! {
-                    newMutableArray.addObject(dict as! NSDictionary)
+                for dict:Any in notesList! {
+                    newMutableArray.add(dict as! NSDictionary)
                 }
-                userDefault.removeObjectForKey("noteslist")
-                newMutableArray.addObject(item)
-                userDefault.setObject(newMutableArray, forKey: "noteslist")
+                userDefault.removeObject(forKey: "noteslist")
+                newMutableArray.add(item)
+                userDefault.set(newMutableArray, forKey: "noteslist")
             }else{ // not exist
-                userDefault.removeObjectForKey("noteslist")
+                userDefault.removeObject(forKey: "noteslist")
                 notesList = NSMutableArray()
-                notesList!.addObject(item)
-                userDefault.setObject(notesList, forKey: "noteslist")
+                notesList!.add(item)
+                userDefault.set(notesList, forKey: "noteslist")
             }
             userDefault.synchronize()
-            self.navigationController?.popToRootViewControllerAnimated(true)
+            self.navigationController?.popToRootViewController(animated: true)
         }
         
     }
